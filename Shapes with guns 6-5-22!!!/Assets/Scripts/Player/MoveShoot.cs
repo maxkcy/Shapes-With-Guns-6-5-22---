@@ -30,9 +30,7 @@ public class MoveShoot : MonoBehaviour
         _moveDir = val.Get<Vector2>();                                                   // Debug.Log("<color=green>MoveShoot:</color> " +  $"Move X:{_moveDir.x}, Move Y: {_moveDir.y}");
     }
 
-    void OnFire() {
-        Debug.Log("<color=green>MoveShoot:</color> Fired a bullet");
-    }
+
 
     private void Move() {
         rb.velocity = new Vector2(_moveDir.x * movementSpeed, _moveDir.y * movementSpeed);

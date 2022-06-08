@@ -53,6 +53,15 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""0bd65b42-46fb-4355-87a5-d2c942d4b0df"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -246,7 +255,7 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""05f6913d-c316-48b2-a6bb-e225f14c7960"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -284,6 +293,17 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""XR"",
                     ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5417fb81-6a28-4da2-aa61-eae3eaed3fa9"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -804,6 +824,54 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Gun"",
+            ""id"": ""7d08f958-479e-43c9-b517-7f90d2e67b1a"",
+            ""actions"": [
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""7167827a-e779-429d-b544-59252bfa882d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""6acb33fd-0ada-49ff-9a5c-aa2a4711722f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""86117241-f765-48fa-ba11-2d514b931a19"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""28092064-050d-41a8-86d9-a619ff726c2e"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -874,6 +942,7 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+        m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -886,6 +955,10 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // Gun
+        m_Gun = asset.FindActionMap("Gun", throwIfNotFound: true);
+        m_Gun_Click = m_Gun.FindAction("Click", throwIfNotFound: true);
+        m_Gun_Look = m_Gun.FindAction("Look", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -948,6 +1021,7 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Fire;
+    private readonly InputAction m_Player_Click;
     public struct PlayerActions
     {
         private @PlayersMap m_Wrapper;
@@ -955,6 +1029,7 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
+        public InputAction @Click => m_Wrapper.m_Player_Click;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -973,6 +1048,9 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
                 @Fire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
+                @Click.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClick;
+                @Click.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClick;
+                @Click.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClick;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -986,6 +1064,9 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
             }
         }
     }
@@ -1095,6 +1176,47 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Gun
+    private readonly InputActionMap m_Gun;
+    private IGunActions m_GunActionsCallbackInterface;
+    private readonly InputAction m_Gun_Click;
+    private readonly InputAction m_Gun_Look;
+    public struct GunActions
+    {
+        private @PlayersMap m_Wrapper;
+        public GunActions(@PlayersMap wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Click => m_Wrapper.m_Gun_Click;
+        public InputAction @Look => m_Wrapper.m_Gun_Look;
+        public InputActionMap Get() { return m_Wrapper.m_Gun; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GunActions set) { return set.Get(); }
+        public void SetCallbacks(IGunActions instance)
+        {
+            if (m_Wrapper.m_GunActionsCallbackInterface != null)
+            {
+                @Click.started -= m_Wrapper.m_GunActionsCallbackInterface.OnClick;
+                @Click.performed -= m_Wrapper.m_GunActionsCallbackInterface.OnClick;
+                @Click.canceled -= m_Wrapper.m_GunActionsCallbackInterface.OnClick;
+                @Look.started -= m_Wrapper.m_GunActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_GunActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_GunActionsCallbackInterface.OnLook;
+            }
+            m_Wrapper.m_GunActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
+            }
+        }
+    }
+    public GunActions @Gun => new GunActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1145,6 +1267,7 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1158,5 +1281,10 @@ public partial class @PlayersMap : IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+    }
+    public interface IGunActions
+    {
+        void OnClick(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
     }
 }

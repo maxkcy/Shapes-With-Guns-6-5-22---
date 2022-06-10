@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class GunDrag : MonoBehaviour
@@ -68,9 +70,26 @@ public class GunDrag : MonoBehaviour
                     }
                     else
                     {
-                        _gun.transform.parent = null;
-                        _gun.GunState = GunState.OnGround;
-                        _gun = null;
+                        bool IsPointerOverUIObject()
+                        {
+                            PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+                            _mPos = Camera.main.WorldToScreenPoint(_mPos);
+                            eventDataCurrentPosition.position = new Vector2(_mPos.x, _mPos.y);
+                            List<RaycastResult> results = new List<RaycastResult>();
+                            EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+                            return results.Count > 0;
+                        }
+                        if (IsPointerOverUIObject())
+                        {
+                            // do nothing really, should i break because else doesnt get called either way, whats best practice? c 6-10-22
+                            break;
+                        }
+                        else
+                        {
+                            _gun.transform.parent = null;
+                            _gun.GunState = GunState.OnGround;
+                            _gun = null;
+                        }
                     }
                     break;
 

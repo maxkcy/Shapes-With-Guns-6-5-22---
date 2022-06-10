@@ -25,15 +25,17 @@ public class SlotActions : MonoBehaviour
 
     public void OnSlotClicked()
     {
-        if ((playersGunDrag.Gun?.GunState == GunState.GettingDragged || playersGunDrag.Gun?.GunState == GunState.OnGround) && slotGun == null)
+        if ((playersGunDrag.Gun?.GunState == GunState.GettingDragged)
+            && slotGun == null)
         {
+            Debug.Log(playersGunDrag.Gun?.GunState + "I'm adding a gun to the slot");
             slotGun = playersGunDrag.Gun;
             playersGunDrag.Gun.GunState = GunState.InSlot;
             gunSr = slotGun.GetComponent<SpriteRenderer>();
             slotColor = gunSr.color;
             image.color = slotColor;
             slotGun.gameObject.SetActive(false);
-            Debug.Log("I added a gun to the slot");
+            
         }
         else if (playersGunDrag.Gun == null && slotGun != null)
         {

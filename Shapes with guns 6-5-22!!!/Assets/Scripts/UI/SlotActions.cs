@@ -18,11 +18,6 @@ public class SlotActions : MonoBehaviour
         ogColor = image.color;
     }
 
-    void Update()
-    {
-        
-    }
-
     public void OnSlotClicked()
     {
         if ((playersGunDrag.Gun?.GunState == GunState.GettingDragged)

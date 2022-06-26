@@ -48,6 +48,7 @@ public class GunDrag : MonoBehaviour
                 case GunState.Armed:
                     _offSet = (Vector2)gunHit.collider.transform.position - _mPos;
                     _gun.GunState = GunState.GettingDragged;
+                    _gun.transform.parent = null;
                     break;
 
                 case GunState.GettingDragged:

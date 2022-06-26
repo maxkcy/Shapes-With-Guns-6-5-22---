@@ -14,7 +14,7 @@ public class TabActions : MonoBehaviour // created by maxkcy 6-5-22
         inventory = transform.parent.GetComponent<RectTransform>();
         // check playerprefs if tab is open or closed
         // set inventory position and isTabOpen. ... but for now
-        Debug.Log("<color=blue>UI TabActions: inventory.position.y: </color>" + inventory.position.y);
+        // Debug.Log("<color=blue>UI TabActions: inventory.position.y: </color>" + inventory.position.y);
         if (inventory.position.y == openPos)
         {
             _isTabOpen = true;

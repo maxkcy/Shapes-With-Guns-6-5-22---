@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 //Created by Maxkcy 6-5-22
-public class MoveShoot : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] [Range(2, 8)] private float movementSpeed = 2; 
@@ -28,11 +28,12 @@ public class MoveShoot : MonoBehaviour
 
     void OnMove(InputValue val) {
         _moveDir = val.Get<Vector2>();                                                   // Debug.Log("<color=green>MoveShoot:</color> " +  $"Move X:{_moveDir.x}, Move Y: {_moveDir.y}");
+        _moveDir.Normalize();
     }
 
 
 
     private void Move() {
-        rb.velocity = new Vector2(_moveDir.x * movementSpeed, _moveDir.y * movementSpeed);
+        rb.velocity = _moveDir * movementSpeed;
     }
 }
